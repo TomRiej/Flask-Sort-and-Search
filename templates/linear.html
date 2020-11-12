@@ -4,6 +4,8 @@
       <style>
         h1 {text-align: center;}
         h2 {text-align: center;}
+        h3 {text-align: center;}
+        p {text-align: center;}
         form {text-align: center;}
         div {text-align: center;}
         .center{
@@ -15,6 +17,7 @@
     </head>
     <body>
       <h1>Linear Search</h1><br>
+      <p class=center> Linear search works by comparing the value to every element in the list. If we reach the end of the list, we know the value isnt in the list.</p><br><br>
       <form action="/linear" method="POST" class="needs-validation center" novalidate>
           
           <div>
@@ -69,6 +72,12 @@
 
           <h2>{{result}}</h2>
           {% endif %}
+
+          {% if comparisons %}
+            <br>
+            <h3> Comparisons</h3>
+            <p>{{comparisons}}</p>
+            {% endif %}
 
           <div>
               <br><br>

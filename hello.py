@@ -19,11 +19,11 @@ def bubble():
 
 
     elif request.method == "POST":
-        listy = request.form["mylist"].split(",")
+        listy = request.form["myList"].split(",")
         listy = [int(x) for x in listy]
-        sortedList = bubbleSort(listy)
+        sortedList, comps = bubbleSort(listy)
  
-        return render_template("bubble.html", sortedList=sortedList)
+        return render_template("bubble.html", sortedList=sortedList, comparisons=comps)
  
 
 @app.route("/merge", methods=["GET", "POST"])
@@ -49,9 +49,9 @@ def linear():
         listy = request.form["myList"].split(",")
         listy = [int(x) for x in listy]
         searchFor = int(request.form["searchVal"])
-        result = linearSearch(listy,searchFor)
+        result, comps = linearSearch(listy,searchFor)
  
-        return render_template("linear.html", result=result)
+        return render_template("linear.html", result=result, comparisons=comps)
 
 @app.route("/binary", methods=["GET", "POST"])
 def binary():
@@ -72,18 +72,21 @@ def binary():
 
 
 def bubbleSort(theList):
+    comps = 0
     origLen = len(theList)
     swaps = -1
     passes = 0
 
     while swaps != 0 and passes < origLen:
+        comps += 2
         swaps = 0
         for i in range(origLen-passes-1):
+            comps += 1
             if theList[i] > theList[i+1]:
                 theList[i], theList[i+1] = theList[i+1], theList[i]
                 swaps += 1
         passes += 1
-    return theList
+    return theList, comps
 
 def mergeSorted(list1,list2):
     nextList = []
@@ -117,11 +120,13 @@ def mergeSort(theList):
 
 
 def linearSearch(theList, val):
+    comps = 0
     for i in theList:
+        comps += 1
         if i == val:
-            return "The item was found in the list"
+            return "The item was found in the list", comps
         
-    return "The item was not found in the list"
+    return "The item was not found in the list", comps
 
 def binarySearch(theList, val):
     if len(theList) == 1:

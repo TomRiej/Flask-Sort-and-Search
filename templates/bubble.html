@@ -4,6 +4,7 @@
       <style>
         h1 {text-align: center;}
         h2 {text-align: center;}
+        h3 {text-align: center;}
         form {text-align: center;}
         div {text-align: center;}
         p {text-align: center;}
@@ -59,6 +60,12 @@
             <br>
             <h1> The sorted list: </h1>
             <h2>{{sortedList}}</h2>
+            {% endif %}
+
+            {% if comparisons %}
+            <br>
+            <h3> Comparisons</h3>
+            <p>{{comparisons}}</p>
             {% endif %}
           </div>
 
