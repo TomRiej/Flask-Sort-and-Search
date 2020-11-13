@@ -20,7 +20,7 @@ def bubble():
 
     elif request.method == "POST":
         listy = request.form["myList"].split(",")
-        listy = [int(x) for x in listy]
+        listy = fixList(listy)
         sortedList, comps = bubbleSort(listy)
  
         return render_template("bubble.html", sortedList=sortedList, comparisons=comps)
@@ -34,10 +34,11 @@ def merge():
 
     elif request.method == "POST":
         listy = request.form["myList"].split(",")
-        listy = [int(x) for x in listy]
-        sortedList = mergeSort(listy)
+        listy = fixList(listy)
+
+        sortedList, comps = mergeSort(listy, 0)
  
-        return render_template("merge.html", sortedList=sortedList)
+        return render_template("merge.html", sortedList=sortedList, comparisons=comps)
 
 @app.route("/linear", methods=["GET", "POST"])
 def linear():
@@ -47,9 +48,13 @@ def linear():
 
     elif request.method == "POST":
         listy = request.form["myList"].split(",")
-        listy = [int(x) for x in listy]
-        searchFor = int(request.form["searchVal"])
-        result, comps = linearSearch(listy,searchFor)
+        listy = fixList(listy)
+        try:
+            searchFor = int(request.form["searchVal"])
+            result, comps = linearSearch(listy,searchFor)
+        except:
+            result = "the search value is not an integer"
+            comps = "N/A"
  
         return render_template("linear.html", result=result, comparisons=comps)
 
@@ -61,14 +66,35 @@ def binary():
 
     elif request.method == "POST":
         listy = request.form["myList"].split(",")
-        listy = [int(x) for x in listy]
-        searchFor = int(request.form["searchVal"])
-        result = binarySearch(listy,searchFor)
+        listy = fixList(listy)
+        if checkSorted(listy):
+            searchFor = int(request.form["searchVal"])
+            result = binarySearch(listy,searchFor)
+        else:
+            result = "The list was not sorted in ascending order"
  
         return render_template("binary.html", result=result)
 
 
 # ============================== pythonic funcs ==============================
+
+def fixList(listy):
+    fixedList = []
+    for i in listy:
+        try:
+            i = int(i)
+            fixedList.append(i)
+        except:
+            pass
+
+    return fixedList
+
+def checkSorted(listy):
+    for i in range(len(listy)-1):
+        if listy[i] > listy[i+1]:
+            return False
+    return True
+
 
 
 def bubbleSort(theList):
@@ -88,35 +114,38 @@ def bubbleSort(theList):
         passes += 1
     return theList, comps
 
-def mergeSorted(list1,list2):
-    nextList = []
-    pointer1 = 0
-    pointer2 = 0
-    while pointer1 < len(list1) and pointer2 < len(list2):
-        
-        if list1[pointer1] < list2[pointer2]:
-            nextList.append(list1[pointer1])
-            pointer1 += 1
+def mergeSort(listy, comps):
+    comps += 1
+    if len(listy) > 1:
+        mid = len(listy)//2
+        right = listy[mid:]
+        left = listy[:mid]
+
+        right, comps = mergeSort(right, comps)
+        left, comps = mergeSort(left, comps)
+
+        nextList = []
+        pointer1 = 0
+        pointer2 = 0
+        comps += 2
+        while pointer1 < len(left) and pointer2 < len(right):
+            comps += 1
+            if left[pointer1] < right[pointer2]:
+                nextList.append(left[pointer1])
+                pointer1 += 1
+            else:
+                nextList.append(right[pointer2])
+                pointer2 += 1
+        comps += 1
+        if pointer1 < len(left):
+            for val in left[pointer1:]:
+                nextList.append(val)
         else:
-            nextList.append(list2[pointer2])
-            pointer2 += 1
+            for val in right[pointer2:]:
+                nextList.append(val)
 
-    if pointer1 < len(list1):
-        for val in list1[pointer1:]:
-            nextList.append(val)
-    else:
-        for val in list2[pointer2:]:
-            nextList.append(val)
-
-    return nextList
-
-def mergeSort(theList):
-    if len(theList) == 1:
-        return theList
-
-    else:
-        mid = len(theList)//2
-        return mergeSorted(mergeSort(theList[:mid]), mergeSort(theList[mid:]))
+        listy = nextList
+    return listy, comps
 
 
 def linearSearch(theList, val):
