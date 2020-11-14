@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request
 
+
 # export FLASK_APP=hello.py
 # flask run
 
@@ -153,20 +154,20 @@ def linearSearch(theList, val):
     for i in theList:
         comps += 1
         if i == val:
-            return "The item was found in the list", comps
+            return "True", comps
         
-    return "The item was not found in the list", comps
+    return "False ", comps
 
 def binarySearch(theList, val):
     if len(theList) == 1:
         if theList[0] == val:
-            return "The item was found in the list"
+            return "True"
         else:
-            return "The item was not found in the list"
+            return "False"
     else:
         midpoint = len(theList)//2
         if theList[midpoint] == val:
-            return "The item was found in the list"
+            return "True"
         elif theList[midpoint] > val:
             return binarySearch(theList[:midpoint], val)
         else:
