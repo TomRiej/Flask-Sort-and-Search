@@ -15,6 +15,7 @@
           width: 50%;
         }
       </style>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js" integrity="sha512-d9xgZrVZpmmQlfonhQUvTR7lMPtO7NkZMkA0ABN3PHCbKA5nqylQ/yWlFAyY6hYgdF1Qh6nYiuADWwKB4C2WSw==" crossorigin="anonymous"></script>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
     </head>
     <body>
@@ -85,10 +86,41 @@
             {% endif %}
           </div>
 
+          <br>
+        <canvas  class="center" id="mergeChart" width="700" height="400"></canvas> <!-- for some reason sizeing isnt working-->
+        <p class=center> A graph showing number of comparisons against number of elements</p>
+        <script>
+          // Our labels along the x-axis
+          var elements = [0,5,10,15,20];
+          // For drawing the lines
+          // var nLogn = [elements[0]*Math.log(elements[0]), elements[1]*Math.log(elements[1]), elements[2]*Math.log(elements[2]), elements[3]*Math.log(elements[3]), elements[4]*Math.log(elements[4])];
+          var nLogn = [0,1,2,3,4] 
+
+          var ctx = document.getElementById("mergeChart");
+          var mergeChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+              labels: elements,
+              datasets: [
+                { 
+                  data: nLogn,
+                  label: "BigO",
+                  borderColor: "#34cceb",
+                  fill: false
+                }
+              ]
+            },
+            options: {
+              responsive: false
+            }
+          });
+        </script>
+
           <div>
             <br><br>
             <a href="/Home" class="btn btn-outline-secondary btn-lg" role="button">Return to Home</a>
           </div>
+          <br>
 
           
 
