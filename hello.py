@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request
-
+from time import time
 
 # export FLASK_APP=hello.py
 # flask run
@@ -15,6 +15,7 @@ def index():
 
 @app.route("/bubble", methods=["GET","POST"])
 def bubble():
+    
     if request.method == "GET":
         return render_template("bubble.html")
 
@@ -22,9 +23,11 @@ def bubble():
     elif request.method == "POST":
         listy = request.form["myList"].split(",")
         listy = fixList(listy)
+        timeStamp = int(time()*1000000)
         sortedList, comps = bubbleSort(listy)
+        timeTaken = int(time()*1000000) - timeStamp
  
-        return render_template("bubble.html", sortedList=sortedList, comparisons=comps)
+        return render_template("bubble.html", sortedList=sortedList, comparisons=comps, timeTaken=timeTaken)
  
 
 @app.route("/merge", methods=["GET", "POST"])

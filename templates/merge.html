@@ -91,10 +91,13 @@
         <p class=center> A graph showing number of comparisons against number of elements</p>
         <script>
           // Our labels along the x-axis
-          var elements = [0,5,10,15,20];
+          var elements = [0,5,10,15,20,25,30,35,40,45,50,55,60];
           // For drawing the lines
-          // var nLogn = [elements[0]*Math.log(elements[0]), elements[1]*Math.log(elements[1]), elements[2]*Math.log(elements[2]), elements[3]*Math.log(elements[3]), elements[4]*Math.log(elements[4])];
-          var nLogn = [0,1,2,3,4] 
+          var nLogn = []
+          for (i=0;i<elements.length;i++){
+            calc = elements[i]*Math.log(elements[i])
+            nLogn.push(calc)
+          }; 
 
           var ctx = document.getElementById("mergeChart");
           var mergeChart = new Chart(ctx, {
